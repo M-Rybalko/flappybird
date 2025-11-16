@@ -1,59 +1,27 @@
-import '../styles.css'
-import Phaser from "phaser";
+import '../styles.css';
+import Phaser from 'phaser';
+import GameScene from './scenes/PlayScene';
+
+const WIDTH = 800;
+const HEIGHT = 600;
+const BIRD_POSITION = {x: WIDTH * 0.1, y: HEIGHT / 2 };
+
+const SHARED_CONFIG = {
+  width: WIDTH,
+  height: HEIGHT,
+  birdPos: BIRD_POSITION
+}
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  ...SHARED_CONFIG,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { y: 400 },
-      debug: true
+      debug: false
     }
   },
-  scene: {
-    preload,
-    create,
-    update,
-  }
+  scene: [new GameScene(SHARED_CONFIG)]
 };
 
-const FLAP_VELOCITY = 275;
-const BIRD_INIT_POS = { 
-  x: config.width * 0.1, 
-  y: config.height / 2 
-}
-let bird = null;
-
 new Phaser.Game(config);
-
-function preload () {
-  this.load.image('sky', 'assets/sky.png')
-  this.load.image('bird', 'assets/bird.png')
-}
-
-function create () {
-  this.add.image(0, 0, 'sky').setOrigin(0);
-  bird = this.physics.add.sprite(BIRD_INIT_POS.x, BIRD_INIT_POS.y, 'bird').setOrigin(0);
-
-  this.input.on('pointerdown', flap);
-  this.input.keyboard.on('keydown-SPACE', flap);
-}
-
-function update(time, delta) {
-  if (bird.y > config.height - bird.height || bird.y < 0) {
-    restart();
-  }
-}
-
-function restart() {
-  bird.x = BIRD_INIT_POS.x;
-  bird.y = BIRD_INIT_POS.y;
-  
-  bird.body.velocity.y = 0;
-}
-
-function flap() {
-  bird.body.velocity.y = -FLAP_VELOCITY;
-}
