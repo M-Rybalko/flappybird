@@ -8,6 +8,6 @@ Difficulty increases over time
 
 To run the game, copy or fork this repo, and run `npm install`
 
-Then, run the project with `npm run dev` command
+Then, run the project with `npm run dev` command. The game will be able to play at port 8080
 
 Enjoy!
